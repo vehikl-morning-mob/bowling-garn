@@ -1,0 +1,103 @@
+class Bowling {
+
+    constructor() {
+        this.frames = [new Frame(1)]
+        this.currentFrame = 0
+    }
+
+    roll(pins) {
+        if (pins < 0) {
+            throw new Error('Negative roll is invalid')
+        }
+
+        if (10 < pins) {
+            throw new Error('Pin count exceeds pins on the lane')
+        }
+
+        let currentFrame = this.frames[this.currentFrame]
+
+        if (10 < currentFrame.score() + pins) {
+            throw new Error('Pin count exceeds pins on the lane')
+        }
+
+        currentFrame.addRoll(pins)
+        if (currentFrame.isComplete()) {
+            this.currentFrame++
+            this.frames.push(new Frame(this.currentFrame + 1))
+        }
+    }
+
+
+    score() {
+        var previousFrame = 0;
+        var score = 0;
+
+        var frames = this.parseFrames()
+
+        score = frames.reduce(function (score, frame) {
+            score += frame
+            return score
+        }, 0)
+
+        return score
+    }
+
+    parseFrames() {
+        return this.frames.map((frame, index) => {
+            var nextFrame = this.frames[index + 1]
+            var nextNextFrame = this.frames[index + 2]
+
+            if (frame.isStrike()) {
+                if (nextFrame.isStrike()) {
+                    return 20 + nextNextFrame.rollOne;
+                }
+                else {
+                    return frame.score() + nextFrame.score()
+                }
+            } else if (frame.isSpare()) {
+                return frame.score() + this.frames[index + 1].rollOne;
+            } else {
+                return frame.score();
+            }
+        })
+    }
+}
+
+class Frame {
+    constructor(number) {
+        this.number = number
+        this.rollOne = null
+        this.rollTwo = null
+    }
+
+    score() {
+        return this.rollOne + this.rollTwo
+    }
+
+    addRoll(pinCount) {
+        if (this.rollOne == null) {
+            this.rollOne = pinCount
+            return
+        }
+
+        this.rollTwo = pinCount
+    }
+
+    isComplete() {
+        return this.isStrike() || this.hasTwoRolls()
+    }
+
+    hasTwoRolls() {
+        return this.rollOne !== null && this.rollTwo !== null;
+    }
+
+    isStrike() {
+        return this.rollOne === 10;
+    }
+
+    isSpare() {
+        return this.hasTwoRolls() && this.score() === 10
+    }
+}
+
+module.exports = Bowling
