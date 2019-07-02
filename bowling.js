@@ -1,7 +1,13 @@
 export class Bowling {
-    roll() { }
+    constructor() {
+        this.total = 0;
+    }
+
+    roll(pins) {
+        this.total += pins;
+    }
 
     score() {
-        return 0;
+        return this.total;
     }
 }
