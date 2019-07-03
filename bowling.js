@@ -1,15 +1,28 @@
 export class Bowling {
     constructor() {
-        this.total = 0;
-        this.frames = [];
-        // { firstRoll, secondRoll }
+        this.frames = Array.from({ length: 10 }, () => []);
     }
 
     roll(pins) {
-        this.total += pins;
+        const frameIndex = this.getCurrentFrameIndex();
+        this.frames[frameIndex].push(pins);
     }
 
     score() {
-        return this.total;
+        const rolls = this.getRollsArrayFromFrames();
+        return rolls.reduce((sum, roll) => {
+            return sum + roll;
+        }, 0);
+    }
+
+    getCurrentFrameIndex() {
+        return this.frames.findIndex(frame => {
+            return frame.length < 2;
+        })
+    }
+
+    getRollsArrayFromFrames() {
+        return [].concat(...this.frames);
     }
 }
+
