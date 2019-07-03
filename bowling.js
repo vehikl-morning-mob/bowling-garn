@@ -9,9 +9,10 @@ export class Bowling {
     }
 
     score() {
-        const rolls = this.getRollsArrayFromFrames();
-        return rolls.reduce((sum, roll) => {
-            return sum + roll;
+        return this.frames.reduce((sum, frame) => {
+            return sum + frame.reduce((sum, roll) => {
+                return sum + roll;
+            });
         }, 0);
     }
 
@@ -19,10 +20,6 @@ export class Bowling {
         return this.frames.findIndex(frame => {
             return frame.length < 2;
         })
-    }
-
-    getRollsArrayFromFrames() {
-        return [].concat(...this.frames);
     }
 }
 
