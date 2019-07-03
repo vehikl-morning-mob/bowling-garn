@@ -1,6 +1,6 @@
 export class Bowling {
     constructor() {
-        this.frames = Array.from({ length: 10 }, () => new Frame());
+        this.frames = Array.from({ length: 10 }, (_, index) => new Frame(index));
     }
 
     roll(pins) {
@@ -22,14 +22,15 @@ export class Bowling {
 
     getCurrentFrameIndex() {
         return this.frames.findIndex(frame => {
-            return frame.rolls.length < 2;
+            return !frame.isComplete();
         })
     }
 }
 
 class Frame {
-    constructor() {
+    constructor(frame) {
         this.rolls = [];
+        this.frame = frame;
     }
 
     push(pins) {
@@ -43,7 +44,7 @@ class Frame {
     }
 
     isComplete() {
-        return false;
+        return this.frame < 9 ? this.rolls.length === 2 : false;
     }
 
     isSpare() {
