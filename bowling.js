@@ -9,8 +9,14 @@ export class Bowling {
     }
 
     score() {
-        return this.frames.reduce((sum, frame) => {
-            return sum + frame.score();
+        return this.frames.reduce((sum, frame, index) => {
+            const lastFrame = this.frames[index - 1];
+            let score = frame.score();
+            if (lastFrame && lastFrame.isSpare()) {
+                score += (frame.rolls[0]);
+            }
+
+            return sum + score;
         }, 0);
     }
 
@@ -38,6 +44,10 @@ class Frame {
 
     isComplete() {
         return false;
+    }
+
+    isSpare() {
+        return this.score() === 10;
     }
 }
 
