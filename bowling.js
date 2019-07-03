@@ -1,6 +1,6 @@
 export class Bowling {
     constructor() {
-        this.frames = Array.from({ length: 10 }, () => []);
+        this.frames = Array.from({ length: 10 }, () => new Frame());
     }
 
     roll(pins) {
@@ -10,16 +10,34 @@ export class Bowling {
 
     score() {
         return this.frames.reduce((sum, frame) => {
-            return sum + frame.reduce((sum, roll) => {
-                return sum + roll;
-            });
+            return sum + frame.score();
         }, 0);
     }
 
     getCurrentFrameIndex() {
         return this.frames.findIndex(frame => {
-            return frame.length < 2;
+            return frame.rolls.length < 2;
         })
+    }
+}
+
+class Frame {
+    constructor() {
+        this.rolls = [];
+    }
+
+    push(pins) {
+        this.rolls.push(pins);
+    }
+
+    score() {
+        return this.rolls.reduce((sum, pins) => {
+            return sum + pins;
+        });
+    }
+
+    isComplete() {
+        return false;
     }
 }
 
