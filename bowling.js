@@ -1,6 +1,6 @@
 export class Bowling {
     constructor() {
-        this.frames = Array.from({ length: 10 }, (_, index) => new Frame(index + 1));
+        this.frames = Array.from({ length: 10 }, (_, index) => new Frame(index + 1, this));
     }
 
     roll(pins) {
@@ -32,9 +32,10 @@ export class Bowling {
 }
 
 class Frame {
-    constructor(frame) {
+    constructor(frame, game) {
         this.rolls = [];
         this.frame = frame;
+        this.game = game;
     }
 
     push(pins) {
@@ -43,6 +44,10 @@ class Frame {
 
     score() {
         return this.rolls.reduce((sum, pins) => {
+            // if strike get next 2 rolls
+                // if next frame is strike 10 + next next frame first roll
+                // else next frame two rolls
+            // if spare get next roll
             return sum + pins;
         });
     }
@@ -54,12 +59,11 @@ class Frame {
     }
 
     isSpare() {
-        return this.rolls.length === 2 && this.score() === 10;
+        return this.rolls.length === 2 && this.rolls[0] + this.rolls[1] === 10;
     }
 
     isStrike() {
-        return this.rolls.length === 1 && this.score() === 10;
+        return this.rolls.length === 1 && this.rolls[0] === 10;
     }
-
 }
 
