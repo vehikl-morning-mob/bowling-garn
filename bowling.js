@@ -48,19 +48,9 @@ class Frame {
     }
 
     isComplete() {
-        if (this.frame === 10) {
-            return false;
-        }
-
-        if (this.rolls.length === 2) {
-            return true;
-        }
-
-        if (this.rolls[0] === 10) {
-            return true;
-        }
-
-        return false;
+        return this.frame === 10
+            ? false
+            : (this.frame < 10 && this.rolls.length === 2 || this.rolls[0] === 10);
     }
 
     isSpare() {
