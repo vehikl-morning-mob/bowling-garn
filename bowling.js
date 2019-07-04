@@ -1,6 +1,6 @@
 export class Bowling {
     constructor() {
-        this.frames = Array.from({ length: 10 }, (_, index) => new Frame(index));
+        this.frames = Array.from({ length: 10 }, (_, index) => new Frame(index + 1));
     }
 
     roll(pins) {
@@ -14,6 +14,10 @@ export class Bowling {
             let score = frame.score();
             if (lastFrame && lastFrame.isSpare()) {
                 score += (frame.rolls[0]);
+            }
+
+            if (lastFrame && lastFrame.isStrike()) {
+                score += frame.score();
             }
 
             return sum + score;
@@ -44,11 +48,28 @@ class Frame {
     }
 
     isComplete() {
-        return this.frame < 9 ? this.rolls.length === 2 : false;
+        if (this.frame === 10) {
+            return false;
+        }
+
+        if (this.rolls.length === 2) {
+            return true;
+        }
+
+        if (this.rolls[0] === 10) {
+            return true;
+        }
+
+        return false;
     }
 
     isSpare() {
-        return this.score() === 10;
+        return this.rolls.length === 2 && this.score() === 10;
     }
+
+    isStrike() {
+        return this.rolls.length === 1 && this.score() === 10;
+    }
+
 }
 

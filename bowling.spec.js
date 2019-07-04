@@ -44,14 +44,14 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(17);
     });
 
-    test.skip('a strike earns ten points in a frame with a single roll', () => {
+    test('a strike earns ten points in a frame with a single roll', () => {
       const rolls = [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       const bowling = new Bowling();
       rolls.forEach((roll) => { bowling.roll(roll); });
       expect(bowling.score()).toEqual(10);
     });
 
-    test.skip('points scored in the two rolls after a strike are counted twice as a bonus', () => {
+    test('points scored in the two rolls after a strike are counted twice as a bonus', () => {
       const rolls = [10, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       const bowling = new Bowling();
       rolls.forEach((roll) => { bowling.roll(roll); });
